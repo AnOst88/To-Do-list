@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+	<head >
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>ToDoList</title>
+		<meta charset='utf-8'>
+
+<style>
+		html,
+		body {
+			background: linear-gradient(
+      		rgba(255,255,255, 0) .9em, rgba(0, 0, 0, .15) 1em)
+  			0 0,
+            linear-gradient(90deg,
+            rgba(255,255,255, 0) .9em, rgba(0, 0, 0, .15) 1em)
+            0 0;
+            background-size: 1em 1em;
+            background-color: ivory;
+            font: italic 16px/2 'Trebuchet MS', Verdana, sans-serif;
+			margin:0;
+			overflow-x: hidden;
+		}
+
+		.container{
+			margin:0 auto;
+			padding-top: 50px;
+
+		}
+		.workList{
+			max-width: 700px;
+		    display: block;
+			width: 80%;
+ 			margin: 2em auto;
+  			box-shadow: 0 0 40px gold;
+  			background:linear-gradient(90deg,
+   		 	#105B63 20%,
+    		#FFFAD5 20%, #FFFAD5 40%,
+    		#FFD34E 40%, #FFD34E 60%,
+    		#DB9E36 60%, #DB9E36 80%,
+    		#BD4932 80%
+    		) 0 0 / 100% .4em no-repeat,
+    		linear-gradient(-90deg,
+    		#105B63 20%,
+    		#FFFAD5 20%, #FFFAD5 40%,
+    		#FFD34E 40%, #FFD34E 60%,
+    		#DB9E36 60%, #DB9E36 80%,
+    		#BD4932 80%
+    		) 0 100% / 100% .4em no-repeat;
+            padding: 10px;
+            border-radius: 10px;
+
+
+		}
+		h1 {
+			text-align: center;
+		}
+		h2{
+			text-align: center;
+		}
+
+		.message{
+			border: 5px solid gold;
+			height: 50px;
+			width: 300px;
+			border-radius: 100px;
+			margin-left:20%;
+			margin-top: 1%;
+			font-size: 27px;
+			cursor: pointer;
+			outline:none;
+		}
+		.add{
+			margin-left: 4%;
+			margin-top: 1%;
+			border-radius: 10%;
+			background-color: aqua;
+			box-shadow: 0 0 50px aqua;
+			cursor: pointer;
+		}
+		.add:hover{
+		   border-radius: 10%;
+		   background-color: gold;
+		   box-shadow: 0 0 50px gold;
+		}
+
+		input[type=checkbox] {
+		  opacity: 0;
+		  position: absolute;
+
+		}
+
+		input[type=checkbox], label {
+		  display: inline-block;
+		  vertical-align: middle;
+		  margin: 5px;
+		  cursor: pointer;
+		  color: black;
+		  font-size: 20px;
+		  font-family: Times new roman;
+		}
+
+		input[type=checkbox] + label:before {
+		  content: '';
+		  border-radius: 5px;
+		  border: 2px solid aqua;
+		  display: inline-block;
+		  vertical-align: middle;
+		  width: 10px;
+		  height: 10px;
+		  padding: 2px;
+		  margin-right: 10px;
+		  text-align: center;
+
+
+		}
+
+		input[type=checkbox]:checked + label:before {
+		  content: "";
+		  display: inline-block;
+		  width: 1px;
+		  height: 5px;
+		  border: solid red;
+		  border-width: 0 3px 3px 0;
+		  transform: rotate(45deg);
+		  border-radius: 0;
+		  margin: 0 15px 5px 5px;
+
+		  }
+
+	    .important {
+		  font-weight: bold;
+		  color: #A40E11;
+		  }
+
+		.press {
+		    margin-left: 4%;
+			margin-top: 1%;
+			border-radius: 10%;
+			background-color: aqua;
+			box-shadow: 0 0 50px aqua;
+			cursor: pointer;
+	      }
+	    .press:hover{
+		 	border-radius: 10%;
+			background-color: gold;
+			box-shadow: 0 0 50px gold;
+		  }
+    
+
+		.menu {
+			height: 100vh;
+			width: 200px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			transform: translateX(210px);
+			background-color: white;
+			transition: .5s;
+			border-radius: 2% 0 0 2%;
+			box-shadow: 0 0 50px gold;
+
+			}
+
+		.openWin {
+			transform: translateX(0);
+			 }
+
+		.text{
+			font-size: 12px;
+			text-align: justify;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		.inp{
+			padding-left: 10px;
+		}
+		
+		#del {
+		    margin-left: 4%;
+			margin-top: 1%;
+			border-radius: 10%;
+			background-color: aqua;
+			box-shadow: 0 0 50px aqua;
+			cursor: pointer;
+	      }
+	    #del:hover{
+		 	border-radius: 10%;
+			background-color: gold;
+			box-shadow: 0 0 50px gold;
+		  }
+
+</style>
+
+</head>
+
+<body class = 'body'>
+
+<div class = 'container'>
+
+<div class = 'workList'>
+<h1>Список дел</h1>
+
+<input type = 'text' class="message inp" placeholder = "Ввод" >
+
+<button class = "add" disabled>Добавить</button>
+<button class ='press'>Инструкция</button>
+
+<div class = 'wrapper'>
+	<ul class = "todo"></ul>
+</div>
+</div>
+
+<div class = 'instruction'>
+
+<div class='js-menu menu text'>
+	<h2>ИНСТРУКЦИЯ</h2>
+	<li>
+		В поле "Ввод" вводим данные и нажимаем "Добавить" и ваше дело появится в списке ниже.</li>
+		<li>Выполненное дело можно отметить галочкой.</li>
+		<li>Правой кнопкой мыши нажимаем на Вашем деле и оно становится красным. Это срочное к выполнению задание.</li>
+		<li>Что бы удалить дело, зажимаем "Ctrl" и нажимаем правой кнопкой мыши на деле которое надо удалить, либо нажимаем кнопку "Удалить".</li>
+		<li>При выключении браузера и перезагрузке страницы Ваши дела не удалятся!</li>
+
+
+
+</div>
+</div>
+</div>
+
+	<script>
+let addMessage = document.querySelector('.message'),
+	addButton = document.querySelector ('.add'),
+	todo = document.querySelector('.todo')
+
+let todoList = [];
+
+if (localStorage.getItem('todo')){
+	todoList = JSON.parse(localStorage.getItem('todo'));
+	displayMessage();
+}
+
+
+addButton.addEventListener('click', function(event){
+	//console.log(addMessage.value);
+	if (addMessage.value === ''){
+		return
+	}
+	let newText = {
+	todo: addMessage.value,
+	chacked:false,
+	important:false
+};
+todoList.push(newText);
+//console.log(todoList);
+displayMessage();
+localStorage.setItem('todo', JSON.stringify(todoList));
+addMessage.value = '';
+addButton.setAttribute('disabled', 'disabled');
+});
+
+//Перебираем массив и выводим на страницу
+function displayMessage(){
+
+let displayMessage = '';
+if(todoList.length === 0) todo.innerHTML = '';
+
+todoList.forEach(function(item, i){
+	//console.log(item);
+	//let displayMessage = `Делло: ${addMessage.value}`;
+	//console.log(`displayMessage: `, displayMessage)
+
+	displayMessage +=  `
+
+	<li class="js-list-wrapper" style="list-style:decimal">
+		<button id ='del' >Удалить</button>
+		<input type = 'checkbox' id= 'item_${i}' ${item.checked ? 'checked' : ''}>
+		<label for = 'item_${i}' class="${item.important ? 'important' : ''} label-todo">${item.todo}</label>
+	</li>
+`;
+todo.innerHTML = displayMessage;
+});
+
+}
+
+todo.addEventListener('change', function (event){
+	//console.log(event.target.value);
+	let idInput = event.target.getAttribute('id');
+	let forLabel = todo.querySelector('[for='+idInput+']');
+	let valueLabel = forLabel.innerHTML;
+	//console.log('forLabel: ',forLabel);
+	//console.log('valueLabel: ',valueLabel);
+	todoList.forEach(function(item){
+		if(item.todo === valueLabel){
+			item.checked = !item.checked;
+			localStorage.setItem('todo', JSON.stringify(todoList));
+		}
+	})
+});
+
+
+todo.addEventListener('contextmenu', function(event){
+	event.preventDefault();
+	todoList.forEach(function(item, i){
+		if(item.todo === event.target.innerHTML){
+			if(event.ctrlKey || event.metaKey){
+				todoList.splice(i, 1);
+			} else{
+				item.important = !item.important;
+			}
+			displayMessage();
+			localStorage.setItem('todo', JSON.stringify(todoList, delate));
+		}
+	});
+});
+
+todo.addEventListener('click', function(event,item){
+	//event.preventDefault();
+	let clickedElement = event.target;
+	let clickedTodoLabel = clickedElement.closest('.js-list-wrapper').querySelector('.label-todo');
+
+	// matches проверяет есть ли такой аттрибут у элемента
+	if (clickedElement.matches('#del')) {
+		todoList.forEach(function(item, i){
+		if(item.todo === clickedTodoLabel.innerHTML){
+			// удаляем элемент из массива по индексу
+			todoList.splice(i, 1);
+			displayMessage();
+			localStorage.setItem('todo', JSON.stringify(todoList, delate));
+		}
+	});
+	} else {
+		console.log('элемент на который кликнули не был кнопкой удалить');
+	}
+});
+
+addMessage.addEventListener('keyup', function(event){
+	//console.log(event.target.value);
+	if (event.target.value !== ''){
+		addButton.removeAttribute('disabled');
+	} else {
+		addButton.setAttribute('disabled', 'disabled');
+	}
+});
+
+
+//Instruction menu-
+let press = document.querySelector(".press")
+let	menu = document.querySelector(".js-menu")
+let	delate = document.querySelector(".delate")
+
+
+press.addEventListener("click", open)
+
+function open(){
+	menu.classList.toggle("openWin")
+}
+
+
+ 	</script>
+
+
+
+	</body>
+</html>
